@@ -14,9 +14,6 @@ help:
 	@echo "  make pipeline  Run full pipeline (bronze → silver → gold)"
 	@echo "  make bronze    Run bronze ingestion only"
 	@echo "  make silver    Run bronze + silver"
-	@echo "  make test      Run all tests"
-	@echo "  make lint      Run flake8 linter on src/"
-	@echo "  make clean     Remove outputs/*.csv (keeps DB data)"
 	@echo ""
 
 # ── Docker ────────────────────────────────────────────────────────
@@ -47,22 +44,3 @@ bronze:
 
 silver:
 	cd src && $(PYTHON) pipeline.py --stage silver
-
-# ── Tests ────────────────────────────────────────────────────────
-
-test:
-	$(PYTHON) -m pytest tests/ -v --tb=short
-
-test-fast:
-	$(PYTHON) -m pytest tests/test_transform_silver.py -v --tb=short
-
-# ── Code quality ─────────────────────────────────────────────────
-
-lint:
-	$(PYTHON) -m flake8 src/ --max-line-length=100 --ignore=E501,W503
-
-# ── Outputs ──────────────────────────────────────────────────────
-
-clean:
-	rm -f outputs/*.csv
-	@echo "Output CSVs removed."
