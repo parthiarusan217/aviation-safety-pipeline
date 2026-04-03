@@ -1,0 +1,61 @@
+-- GOLD LAYER: Aircraft Risk Profile — Meridian Aero Underwriters
+
+CREATE SCHEMA IF NOT EXISTS gold;
+
+DROP TABLE IF EXISTS gold.aircraft_risk_profile CASCADE;
+CREATE TABLE gold.aircraft_risk_profile (
+    profile_key             BIGSERIAL PRIMARY KEY,
+    model_family            TEXT NOT NULL,  
+    make                    TEXT,
+    model_variants          TEXT,           
+    aircraft_category       TEXT,           
+    typical_engine_type     TEXT,           
+    typical_engine_count    SMALLINT,
+    total_incidents         INTEGER,
+    first_incident_year     SMALLINT,
+    last_incident_year      SMALLINT,
+    years_in_record         SMALLINT,       
+    incidents_per_year      NUMERIC(6,2),   
+    destroyed_count         INTEGER,
+    substantial_count       INTEGER,
+    minor_damage_count      INTEGER,
+    pct_destroyed           NUMERIC(5,1),   
+    pct_substantial         NUMERIC(5,1),
+    pct_minor               NUMERIC(5,1),
+    total_fatal_incidents   INTEGER,     
+    total_fatal_injuries    INTEGER,
+    total_serious_injuries  INTEGER,
+    total_minor_injuries    INTEGER,
+    pct_fatal_incidents     NUMERIC(5,1),
+    avg_fatals_per_fatal_incident NUMERIC(5,2),
+    imc_incidents           INTEGER,
+    vmc_incidents           INTEGER,
+    pct_imc                 NUMERIC(5,1),
+    top_soe_group           TEXT,        
+    top_finding             TEXT,        
+    top_phase               TEXT,        
+    kw_engine_failure_pct   NUMERIC(5,1),
+    kw_fuel_exhaustion_pct  NUMERIC(5,1),
+    kw_loss_of_control_pct  NUMERIC(5,1),
+    kw_weather_factor_pct   NUMERIC(5,1),
+    kw_mechanical_pct       NUMERIC(5,1),
+    kw_pilot_error_pct      NUMERIC(5,1),
+    kw_runway_excursion_pct NUMERIC(5,1),
+    kw_fire_pct             NUMERIC(5,1),
+    kw_structural_pct       NUMERIC(5,1),
+    kw_bird_strike_pct      NUMERIC(5,1),
+    avg_severity_score_all_time  NUMERIC(5,2),
+    avg_severity_score_recent3yr NUMERIC(5,2),
+    severity_trend               TEXT,        
+    trend_delta                  NUMERIC(6,2),
+    risk_score                   NUMERIC(6,2),
+    risk_tier                    TEXT,        
+    risk_rationale               TEXT,        
+    sample_probable_cause        TEXT,        
+    sample_finding               TEXT,        
+    gold_generated_at       TIMESTAMPTZ DEFAULT NOW(),
+    incident_mkeys          TEXT         
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uix_gold_risk_model_family
+    ON gold.aircraft_risk_profile(model_family);
